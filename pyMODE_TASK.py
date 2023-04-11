@@ -1621,8 +1621,43 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			out_loc = self.pca_out_dir_location.getvalue()
 			ref_loc = self.pca_ref_file.getvalue()
 	
-			# run SVD
-			
+			# actual function to run type of pca
+			def run_pca_type(pc_sele):
+				'''run pca type based on user selection. e.g. SVD, EVD, KPCA, IPCA'''
+
+				## map different PCA types to corresponding commands line argument. 
+				pca_type = {'svd': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc + ' -st ' + st_sele,
+							'evd': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc,
+							'kpca': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc + ' -kt ' + kt_sele,
+							'ipca': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc}
+				
+				pca_type_no_ref = {'svd': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -st ' + st_sele,
+							'evd': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc,
+							'kpca': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -kt ' + kt_sele,
+							'ipca': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc}
+				
+				if trj_loc == '':
+					tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No trajectory location given!")
+				if top_loc == '':
+					tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No topology location given!")
+				else:
+					if ref_loc != '':
+						cmd = pca_type[pc_sele]
+					else:				
+						tkinter.messagebox.showinfo("pyMODE-TASK warning!", "No Ref structure given, using deafult first frame!")
+						cmd = pca_type_no_ref[pc_sele]
+						#cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -st ' + st_sele
+					out = repr(os.system(cmd))
+					if out == '0':
+						msg = f"pyMODE-TASK!, PCA ({pc_sele}) run successful!\nResults are written in\n {out_loc}"
+						tkinter.messagebox.showinfo(title='Info',message=msg)
+					else:
+						msg = f"pyMODE-TASK!, PCA ({pc_sele}) run failed. See terminal for details!"
+						tkinter.messagebox.showinfo(title='Info', message=msg)
+				return None
+			## call function
+			run_pca_type(pc_sele)
+			'''		
 			if pc_sele == 'svd':
 			
 				if trj_loc == '':
@@ -1704,8 +1739,9 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 					else:
 						tkinter.messagebox.showinfo("pyMODE-TASK!", "Incremental PCA run failed. See terminal for details!")	
 		#self.pb.stop()
+	'''
 	def run_ipca(self):
-	
+		'''run ipca'''
 		# core scripts are located at src directory under pyMODE-TASK directory
 		#cmd_dir = './src'
 		status = self.check_conf_status()
