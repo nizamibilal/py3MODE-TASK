@@ -1,6 +1,4 @@
-<img src='https://readthedocs.org/projects/pymode-task/badge/?version=latest'  align="right"/> <img src ='https://img.shields.io/badge/python-3-blue.svg' align="right"> <img src='https://anaconda.org/nizamibilal1064/mode-task/badges/version.svg' align="right">
-
-
+<img src='https://readthedocs.org/projects/pymode-task/badge/?version=latest'  align="right"/> <img src ='https://img.shields.io/badge/python-3-blue.svg' align="right"> 
 
 
 # py3MODE-TASK
